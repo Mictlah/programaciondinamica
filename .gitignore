@@ -1,41 +1,30 @@
-# Prerequisites
-*.d
+# Archivos y carpetas de Visual Studio
+.vs/
+x64/
+Debug/
+Release/
+ipch/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# Archivos temporales y de compilación
 *.obj
-
-# Precompiled Headers
-*.gch
 *.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
 *.pdb
+*.idb
+*.tlog
+*.log
+*.tmp
+*.cache
+*.opendb
+*.db
+*.db-shm
+*.db-wal
+*.vsidx
+*.suo
+*.user
+*.bak
+*.backup.json
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# debug information files
-*.dwo
+# Archivos generados por Copilot / IntelliSense
+CopilotIndices/
+FileContentIndex/
+*.ipch
