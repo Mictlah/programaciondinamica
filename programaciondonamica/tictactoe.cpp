@@ -12,6 +12,8 @@ using namespace std;
 class TicTacToe {
 private:
     vector<vector<char>> tablero;
+    vector<pair<int, int>> casillasGanadoras;
+    char direccionGanadora;
     char jugadorActual;
     int movimientos;
     bool contraPC;
@@ -26,6 +28,8 @@ public:
         contraPC = false;
         simboloJugador = 'X';
         simboloPC = 'O';
+        casillasGanadoras.clear();
+        direccionGanadora = 'N';
     }
 
     void configurarModo(bool esContraPC) {
@@ -37,12 +41,60 @@ public:
     }
 
     void mostrarTablero() {
+        auto esGanadora = [&](int i, int j) {
+            for (auto& p : casillasGanadoras)
+                if (p.first == i && p.second == j) return true;
+            return false;
+            };
+
+        auto celdaStr = [&](int i, int j) -> string {
+            char c = tablero[i][j];
+            string base = "   ";
+            if (c != ' ') {
+                base[0] = ' ';
+                base[1] = c;
+                base[2] = ' ';
+            }
+
+            if (!esGanadora(i, j)) return base;
+
+            if (direccionGanadora == 'H') {
+                // -X-
+                if (c == ' ') return "---";
+                string s = "";
+                s += '-';
+                s += c;
+                s += '-';
+                return s;
+            }
+            else if (direccionGanadora == 'V') {
+                // |X|
+                if (c == ' ') return "   ";
+                string s = "";
+                s += '|';
+                s += c;
+                s += '|';
+                return s;
+            }
+            else if (direccionGanadora == 'D' || direccionGanadora == 'A') {
+                if (i == 1 && j == 1) {
+                    string s = " ";
+                    s += (char)0;
+                    return " O ";
+                }
+                else {
+                    return " Ø ";
+                }
+            }
+            return base;
+            };
+
         cout << "\n";
         for (int i = 0; i < 3; i++) {
             cout << "  ";
             for (int j = 0; j < 3; j++) {
-                cout << " " << tablero[i][j];
-                if (j < 2) cout << " |";
+                cout << celdaStr(i, j);
+                if (j < 2) cout << "|";
             }
             cout << "\n";
             if (i < 2) cout << "  ---+---+---\n";
@@ -79,35 +131,42 @@ public:
     }
 
     bool verificarGanador() {
-        // Verificar filas
+        casillasGanadoras.clear();
+        direccionGanadora = 'N';
+
         for (int i = 0; i < 3; i++) {
             if (tablero[i][0] == jugadorActual &&
                 tablero[i][1] == jugadorActual &&
                 tablero[i][2] == jugadorActual) {
+                casillasGanadoras = { {i,0}, {i,1}, {i,2} };
+                direccionGanadora = 'H';
                 return true;
             }
         }
 
-        // Verificar columnas
         for (int j = 0; j < 3; j++) {
             if (tablero[0][j] == jugadorActual &&
                 tablero[1][j] == jugadorActual &&
                 tablero[2][j] == jugadorActual) {
+                casillasGanadoras = { {0,j}, {1,j}, {2,j} };
+                direccionGanadora = 'V';
                 return true;
             }
         }
 
-        // Verificar diagonal principal
         if (tablero[0][0] == jugadorActual &&
             tablero[1][1] == jugadorActual &&
             tablero[2][2] == jugadorActual) {
+            casillasGanadoras = { {0,0}, {1,1}, {2,2} };
+            direccionGanadora = 'D';
             return true;
         }
 
-        // Verificar diagonal secundaria
         if (tablero[0][2] == jugadorActual &&
             tablero[1][1] == jugadorActual &&
             tablero[2][0] == jugadorActual) {
+            casillasGanadoras = { {0,2}, {1,1}, {2,0} };
+            direccionGanadora = 'A';
             return true;
         }
 
@@ -146,9 +205,7 @@ public:
         return simboloPC;
     }
 
-    // Movimiento inteligente de la PC
     int obtenerMovimientoPC() {
-        // 1. Intentar ganar
         for (int i = 1; i <= 9; i++) {
             int fila = (i - 1) / 3;
             int col = (i - 1) % 3;
@@ -162,7 +219,6 @@ public:
             }
         }
 
-        // 2. Bloquear al jugador
         for (int i = 1; i <= 9; i++) {
             int fila = (i - 1) / 3;
             int col = (i - 1) % 3;
@@ -176,12 +232,10 @@ public:
             }
         }
 
-        // 3. Tomar el centro si está disponible
         if (tablero[1][1] == ' ') {
             return 5;
         }
 
-        // 4. Tomar una esquina
         vector<int> esquinas = { 1, 3, 7, 9 };
         vector<int> esquinasDisponibles;
         for (int esquina : esquinas) {
@@ -195,7 +249,6 @@ public:
             return esquinasDisponibles[rand() % esquinasDisponibles.size()];
         }
 
-        // 5. Tomar cualquier posición disponible
         vector<int> disponibles;
         for (int i = 1; i <= 9; i++) {
             int fila = (i - 1) / 3;
@@ -277,7 +330,6 @@ int main() {
                 juego.mostrarTablero();
 
                 if (contraPC && juego.getJugadorActual() == juego.getSimboloPC()) {
-                    // Turno de la PC
                     cout << "Turno de la PC (" << juego.getSimboloPC() << ")...\n";
                     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
                     int movimientoPC = juego.obtenerMovimientoPC();
@@ -285,7 +337,6 @@ int main() {
                     cout << "La PC eligió la posición: " << movimientoPC << "\n";
                 }
                 else {
-                    // Turno del jugador humano
                     if (contraPC) {
                         cout << "Tu turno (Jugador " << juego.getSimboloJugador() << ")\n";
                     }
