@@ -45,7 +45,7 @@ public:
                 if (j < 2) cout << " |";
             }
             cout << "\n";
-            if (i < 2) cout << "  -----------\n";
+            if (i < 2) cout << "  ---+---+---\n";
         }
         cout << "\n";
     }
@@ -53,9 +53,9 @@ public:
     void mostrarPosiciones() {
         cout << "\nPosiciones del tablero:\n";
         cout << "  1 | 2 | 3\n";
-        cout << "  ---------\n";
+        cout << "  --+---+--\n";
         cout << "  4 | 5 | 6\n";
-        cout << "  ---------\n";
+        cout << "  --+---+--\n";
         cout << "  7 | 8 | 9\n\n";
     }
 
