@@ -23,6 +23,8 @@ ipch/
 *.user
 *.bak
 *.backup.json
+*.exe
+*.json
 
 # Archivos generados por Copilot / IntelliSense
 CopilotIndices/
