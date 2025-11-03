@@ -12,6 +12,22 @@ private:
     int ultFila = -1., ultCol = -1;
     char jugadorActual;
 
+    bool enRango(int r, int c) const{
+        return r >= 0 && r < filas && c >= 0 && c < columnas;
+    }
+
+    int contar(int dr, int dc) const {
+        if (ultFila < 0 || ultCol < 0) return 0;
+        char f = tablero[ultFila][ultCol];
+        int r = ultFila + dr, c = ultCol + dc, cnt = 0;
+        while (enRango(r, c) && tablero[r][c] == f) {
+            cnt++;
+            r += dr;
+            c += dc;
+        }
+        return cnt;
+    }
+
 public:
     Conecta4(int f, int c) : filas(f), columnas(c), jugadorActual('X')
     {
@@ -58,6 +74,16 @@ public:
     void cambiarTurno()
     {
         jugadorActual = (jugadorActual == 'X') ? 'O' : 'X';
+    }
+
+    bool hay4EnLinea() const {
+        if (ultFila < 0 || ultCol < 0) return false;
+        const int D[4][2] = { {0,1}, {1,0}, {1,1}, {1,-1} };
+        for (auto& d : D) {
+            int total = 1 + contar(d[0], d[1] + contar(-d[0], -d[1]));
+            if (total >= 4) return true;
+        }
+        return false;
     }
 };
 
