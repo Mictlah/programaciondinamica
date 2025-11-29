@@ -33,6 +33,10 @@ int factorial(int n) {
     return n * factorial(n-1);
 }
 
+double potencia(dobuel base, int exponente = 2){
+    return pow(base, exponente);
+}
+
 int main(){
     return 0;
 }
