@@ -197,5 +197,21 @@ class CajeroAutomatico{
 };
 
 int main(){
+    Banco banco;
+
+    Cuenta* cuenta1 = new Cuenta("1001", "1234", 5000.00);
+    Cuenta* cuenta2 = new Cuenta("1002", "5678", 3000.00);
+    Cuenta* cuenta3 = new Cuenta("1003", "9012", 7500.00);
+    
+    banco.agregarCuenta(cuenta1);
+    banco.agregarCuenta(cuenta2);
+    banco.agregarCuenta(cuenta3);
+
+    CajeroAutomatico cajero(&banco);
+    cajero.ejecutar();
+    
+    delete cuenta1;
+    delete cuenta2;
+    delete cuenta3;
     return 0;
 }
