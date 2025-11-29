@@ -41,6 +41,39 @@ class Cuenta{
         }
 };
 
+class Banco{
+    private:
+        map<string, Cuenta*> cuentas;
+    
+    public:
+        void agregarCuenta(Cuenta* cuenta){
+            cuentas[cuenta->obtenerNumeroCuenta()] = cuenta;
+        }
+
+        Cuenta* obtenerCuenta(string numeroCuenta){
+            if (cuentas.find(numeroCuenta) != cuentas.end()){
+                return cuentas[numeroCuenta];
+            }
+            return nullptr;
+        }
+
+        bool transferir(string cuentaOrigen, string cuentaDestino, double cantidad){
+            Cuenta* origen = obtenerCuenta(cuentaOrigen);
+            Cuenta* destino = obtenerCuenta(cuentaDestino);
+
+            if (!origen || !destino){
+                cout << "Error: Cuenta no encontrada\n";
+                return false;
+            }
+
+            if (origen->retirar(cantidad)){
+                destino->depositar(cantidad);
+                return true;
+            }
+            return false;
+        }
+};
+
 int main(){
     return 0;
 }
