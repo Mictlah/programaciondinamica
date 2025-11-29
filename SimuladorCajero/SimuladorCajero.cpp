@@ -74,6 +74,128 @@ class Banco{
         }
 };
 
+class CajeroAutomatico{
+    private:
+        Banco* banco;
+        Cuenta* cuentaActual;
+
+        void mostrarMenu(){
+        cout << "\n=== CAJERO AUTOMATICO ===\n";
+        cout << "1. Consultar saldo\n";
+        cout << "2. Retirar efectivo\n";
+        cout << "3. Depositar efectivo\n";
+        cout << "4. Transferir entre cuentas\n";
+        cout << "5. Salir\n";
+        cout << "Seleccione una opcion: ";
+        }
+
+        void consultarSaldo(){
+            cout << fixed << setprecision(2);
+            cout << "\nSaldo Actual: $" << cuentaActual->consultarSaldo() << "\n";
+        }
+
+        void retirarEfectivo(){
+            double cantidad;
+            cout << "\nIngrese cantidad a retirar: $";
+            cin >> cantidad;
+
+            if (cuentaActual->retirar(cantidad)){
+                cout << "Retiro exitoso. Nuevo saldo: $" << cuentaActual->consultarSaldo() << "\n";
+            }
+        }
+
+        void depositarEfectivo(){
+            double cantidad;
+            cout << "\nIngrese cantidad a depositar: $";
+            cin >> cantidad;
+            
+            if (cuentaActual->depositar(cantidad)){
+                cout << "Deposito exitoso. Nuevo saldo: $" << cuentaActual->consultarSaldo() << "\n";
+            }
+        }
+
+        void transferirDinero(){
+            string cuentaDestino;
+            double cantidad;
+
+            cout << "\nIngrese numero de cuenta destino: ";
+            cin >> cuentaDestino;
+            cout << "Ingrese cantidad a transferir: $";
+            cin >> cantidad;
+
+            if (banco->transferir(cuentaAxctual->obtenerNumeroCuenta(), cuentaDestino, cantidad)){
+                cout << "Transferencia exitosa. Nuevo saldo: $" << cuentaActual->consultarSaldo() << "\n";
+            }
+        }
+
+    public:
+        cajeroAutomatico(Banco* b): banco(b), cuentaActual(nullptr){
+
+            bool autenticar(){
+                string numeroCuenta, pin;
+                int intentos = 3;
+
+        cout << "=== BIENVENIDO ===\n";
+        cout << "Ingrese numero de cuenta: ";
+        cin >> numeroCuenta;
+        
+        Cuenta* cuenta = banco->obtenerCuenta(numeroCuenta);
+        if (!cuenta) {
+            cout << "Cuenta no encontrada\n";
+            return false;
+        }
+        
+        while (intentos > 0) {
+            cout << "Ingrese su PIN: ";
+            cin >> pin;
+            
+            if (cuenta->verificarPIN(pin)) {
+                cuentaActual = cuenta;
+                cout << "Autenticacion exitosa\n";
+                return true;
+            }
+            
+            intentos--;
+            if (intentos > 0) {
+                cout << "PIN incorrecto. Intentos restantes: " << intentos << "\n";
+            }
+        }
+        
+        cout << "Tarjeta bloqueada por seguridad\n";
+        return false;
+    }
+    
+    void ejecutar() {
+        if (!autenticar()) return;
+        
+        int opcion;
+        do {
+            mostrarMenu();
+            cin >> opcion;
+            
+            switch(opcion) {
+                case 1:
+                    consultarSaldo();
+                    break;
+                case 2:
+                    retirarEfectivo();
+                    break;
+                case 3:
+                    depositarEfectivo();
+                    break;
+                case 4:
+                    transferirDinero();
+                    break;
+                case 5:
+                    cout << "Gracias por usar nuestro servicio\n";
+                    break;
+                default:
+                    cout << "Opcion invalida\n";
+            }
+        } while (opcion != 5);
+    }
+};
+
 int main(){
     return 0;
 }
