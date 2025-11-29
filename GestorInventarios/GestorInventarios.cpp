@@ -40,14 +40,14 @@ class GestorInventario{
     public:
         GestorInventario() : siguienteId(1) {}
 
-    void agregarProducto(string nombnre, double precio, int cantidad){
+    void agregarProducto(string nombre, double precio, int cantidad){
         productos.push_back(Producto(siguienteId++, nombre, precio, cantidad));
         cout << "Producto agregado exitosamente!" << endl;
     }
 
     void mostrarInventario(){
         if (productos.empty()){
-            coout << "El inventario esta vacio." << endl;
+            cout << "El inventario esta vacio." << endl;
             return;
         }
         cout << "\n" << setw(5) << "ID" << setw(20) << "Nombre" << setw(10) << "Precio" << setw(10) << "Cantidad" << endl;
@@ -158,5 +158,116 @@ class GestorInventario{
 };
 
 int main(){
+    GestorInventario inventario;
+    int opcion;
+
+    do
+    {
+        cout << "\n=== GESTOR DE INVENTARIO ===" << endl;
+        cout << "1. Agregar producto" << endl;
+        cout << "2. Mostrar inventario" << endl;
+        cout << "3. Buscar por ID" << endl;
+        cout << "4. Buscar por nombre" << endl;
+        cout << "5. Actualizar producto" << endl;
+        cout << "6. Eliminar producto" << endl;
+        cout << "7. Ordenar por precio" << endl;
+        cout << "8. Ordenar por nombre" << endl;
+        cout << "9. Ordenar por cantidad" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+
+        switch (opcion)
+        {
+        case 1:
+        {
+            string nombre;
+            double precio;
+            int cantidad;
+            cout << "Nombre: ";
+            cin.ignore();
+            getline(cin, nombre);
+            cout << "Precio: ";
+            cin >> precio;
+            cout << "Cantidad: ";
+            cin >> cantidad;
+            inventario.agregarProducto(nombre, precio, cantidad);
+            break;
+        }
+        case 2:
+            inventario.mostrarInventario();
+            break;
+        case 3:
+        {
+            int id;
+            cout << "ID del producto: ";
+            cin >> id;
+            Producto *p = inventario.buscarPorId(id);
+            if (p)
+            {
+                cout << "\n"
+                     << setw(5) << "ID" << setw(20) << "Nombre"
+                     << setw(10) << "Precio" << setw(10) << "Cantidad" << endl;
+                cout << string(45, '-') << endl;
+                p->mostrar();
+            }
+            else
+            {
+                cout << "Producto no encontrado." << endl;
+            }
+            break;
+        }
+        case 4:
+        {
+            string nombre;
+            cout << "Nombre del producto: ";
+            cin.ignore();
+            getline(cin, nombre);
+            inventario.buscarPorNombre(nombre);
+            break;
+        }
+        case 5:
+        {
+            int id, cantidad;
+            double precio;
+            cout << "ID del producto: ";
+            cin >> id;
+            cout << "Nuevo precio: ";
+            cin >> precio;
+            cout << "Nueva cantidad: ";
+            cin >> cantidad;
+            inventario.actualizarProducto(id, precio, cantidad);
+            break;
+        }
+        case 6:
+        {
+            int id;
+            cout << "ID del producto: ";
+            cin >> id;
+            inventario.eliminarProducto(id);
+            break;
+        }
+        case 7:
+        {
+            int orden;
+            cout << "1. Ascendente  2. Descendente: ";
+            cin >> orden;
+            inventario.ordenarPorPrecio(orden == 1);
+            break;
+        }
+        case 8:
+            inventario.ordenarPorNombre();
+            break;
+        case 9:
+        {
+            int orden;
+            cout << "1. Ascendente  2. Descendente: ";
+            cin >> orden;
+            inventario.ordenarPorCantidad(orden == 1);
+            break;
+        }
+        }
+    } while (opcion != 0);
+    
     return 0;
 }
