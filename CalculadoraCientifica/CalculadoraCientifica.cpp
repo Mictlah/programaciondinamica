@@ -41,6 +41,12 @@ double potencia(double base, double exponente){
     return pow(base, exponente);
 }
 
+double raiz(double x){
+    if (x < 0)
+        throw invalid_argument("Raiz de numero negativo no permitido.");
+    return sqrt(x);
+}
+
 int main(){
     return 0;
 }
