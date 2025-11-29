@@ -37,6 +37,10 @@ double potencia(dobuel base, int exponente = 2){
     return pow(base, exponente);
 }
 
+double potencia(double base, double exponente){
+    return pow(base, exponente);
+}
+
 int main(){
     return 0;
 }
