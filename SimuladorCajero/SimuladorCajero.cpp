@@ -36,6 +36,15 @@ class Cuenta{
             return true;
         }
 
+        bool depositar(double cantidad) {
+            if (cantidad <= 0) {
+                cout << "Error: Cantidad invalida\n";
+                return false;
+            }
+            saldo += cantidad;
+            return true;
+        }
+
         string obtenerNumeroCuenta(){
             return numeroCuenta;
         }
@@ -123,17 +132,17 @@ class CajeroAutomatico{
             cout << "Ingrese cantidad a transferir: $";
             cin >> cantidad;
 
-            if (banco->transferir(cuentaAxctual->obtenerNumeroCuenta(), cuentaDestino, cantidad)){
+            if (banco->transferir(cuentaActual->obtenerNumeroCuenta(), cuentaDestino, cantidad)){
                 cout << "Transferencia exitosa. Nuevo saldo: $" << cuentaActual->consultarSaldo() << "\n";
             }
         }
 
     public:
-        cajeroAutomatico(Banco* b): banco(b), cuentaActual(nullptr){
+        CajeroAutomatico(Banco* b) : banco(b), cuentaActual(nullptr) {}
 
-            bool autenticar(){
-                string numeroCuenta, pin;
-                int intentos = 3;
+         bool autenticar(){
+            string numeroCuenta, pin;
+            int intentos = 3;
 
         cout << "=== BIENVENIDO ===\n";
         cout << "Ingrese numero de cuenta: ";
