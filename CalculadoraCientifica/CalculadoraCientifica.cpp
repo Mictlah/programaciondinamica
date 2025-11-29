@@ -21,8 +21,16 @@ double multiplicacion(double a, double b)
 double division(double a, double b)
 {
     if (b == 0)
-        throw invalid_argument("División por cero no permitida");
+        throw invalid_argument("Division por cero no permitida");
     return a / b;
+}
+
+int factorial(int n) {
+    if (n < 0)
+        throw invalid_argument("Factorial de numero negativo no definido.")
+    if (n == 0 || n == 1)
+        return 1;
+    return n * factorial(n-1);
 }
 
 int main(){
