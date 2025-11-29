@@ -18,6 +18,13 @@ double multiplicacion(double a, double b)
     return a * b;
 }
 
+double division(double a, double b)
+{
+    if (b == 0)
+        throw invalid_argument("División por cero no permitida");
+    return a / b;
+}
+
 int main(){
     return 0;
 }
